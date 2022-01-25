@@ -266,7 +266,7 @@ def test_not_exist_value_of_status_param():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 200
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
@@ -288,7 +288,7 @@ def test_empty_value_of_status_param():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 200
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
@@ -310,7 +310,7 @@ def test_not_exist_value_of_customer_id_param():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 200
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
@@ -332,7 +332,7 @@ def test_empty_value_of_customer_id_param():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 200
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
@@ -356,6 +356,74 @@ def test_not_valid_token():
 
     assert resp.status_code == 401
     assert exp_resp == act_resp
+
+
+@allure.epic("Autotests-API")
+@allure.feature("Payments")
+@allure.story("Get payments mock")
+@allure.title("Not valid token header name")
+def test_not_valid_token_header():
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    params = {'status': 'FAILED', 'customer_id': 'john-123'}
+    headers = {
+        'Content-Type': 'application/json',
+        'Not-Api-Key': 'valid_token'
+    }
+    resp = requests.get(url, params=params, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
+
+
+@allure.epic("Autotests-API")
+@allure.feature("Payments")
+@allure.story("Get payments mock")
+@allure.title("Unknown additional header")
+def test_unknown_additional_header():
+    exp_resp = import_json_from_file('../jsons/valid_response_2_failed_orders.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    params = {'status': 'FAILED', 'customer_id': 'john-123'}
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Api-Key': 'valid_token'
+    }
+    resp = requests.get(url, params=params, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == requests.codes.ok
+    assert exp_resp == act_resp
+
+
+@allure.epic("Autotests-API")
+@allure.feature("Payments")
+@allure.story("Post payments mock")
+@allure.title("Not valid http method")
+def test_not_valid_method():
+    exp_resp = import_json_from_file('../jsons/405_response.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    params = {'status': 'FAILED', 'customer_id': 'john-123'}
+    headers = {
+        'Content-Type': 'application/json',
+        'Not-Api-Key': 'valid_token'
+    }
+    resp = requests.post(url, params=params, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 405
+    assert exp_resp == act_resp
+
+
 
 # I've added it just for store test cases. For implementation I need more time, but I'm not sure that it should be implemented with mock data
 @allure.epic("Autotests-API")
@@ -427,6 +495,14 @@ def test_prevCursor_one_less():
 @allure.story("Get payments mock")
 @allure.title("prevCursor one less of total amount of orders")
 def test_prevCursor_one_less():
+    ''' Will be implemented later because need to create additional amount of data'''
+
+
+@allure.epic("Autotests-API")
+@allure.feature("Payments")
+@allure.story("Get payments mock")
+@allure.title("add unsupported header")
+def test_additional_unsupported_header():
     ''' Will be implemented later because need to create additional amount of data'''
 
 

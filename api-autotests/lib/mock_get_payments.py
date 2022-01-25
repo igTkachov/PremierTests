@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 
 @app.route('/payments', methods=['GET'])
-def init_payments():
+def get_payments():
     # get response from file
     resp_all_john_orders = import_json_from_file('../jsons/valid_response_all_john_orders.json')
     resp_failed_orders = import_json_from_file('../jsons/valid_response_2_failed_orders.json')
@@ -17,13 +17,14 @@ def init_payments():
     # headers
     headers = request.headers
     auth = headers.get("X-Api-Key")
+    not_auth = headers.get("Not-Api-Key")
     # query
     args = request.args
     # status query and customer id query
     status = request.args.get("status")
     customer = request.args.get("customer_id")
 
-    if auth != 'valid_token':
+    if auth != 'valid_token' or not_auth != None:
         return jsonify({"message": "ERROR: Unauthorized"}), 401
     elif 'status1' in args:
         return jsonify({"message": "404 Not Found"}), 404
@@ -48,6 +49,11 @@ def init_payments():
         return jsonify({"message": "ERROR: Unauthorized"}), 401
     else:
         return jsonify({"message": "400 Bad Request"}), 400
+
+
+@app.route('/payments', methods=['POST'])
+def post_payments():
+    return jsonify({"message": "405 Method Not Allowed"}), 405
 
 
 @app.route('/payments1', methods=['GET'])

@@ -3,6 +3,7 @@
 .venv
 .pytest_cache
 api-autotests/tests/.pytest_cache
+api-autotests/tests/allure_results
 ui-autotests/.pytest_cache
 ui-autotests/screenshots
 ui-autotests/*.log
