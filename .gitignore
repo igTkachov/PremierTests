@@ -1,0 +1,10 @@
+# Project exclude paths
+/venv/
+.venv
+.pytest_cache
+api-autotests/tests/.pytest_cache
+ui-autotests/.pytest_cache
+ui-autotests/screenshots
+ui-autotests/*.log
+.idea
+*.iml
