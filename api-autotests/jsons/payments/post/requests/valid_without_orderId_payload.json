@@ -1,0 +1,16 @@
+{
+  "customerId": "customer-123",
+  "currencyCode": "EUR",
+  "amount": 42,
+  "paymentMethodToken": "heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4",
+  "paymentMethod": {
+    "vaultOnSuccess": true
+  },
+  "customer": {
+    "emailAddress": "customer123@gmail.com"
+  },
+  "metadata": {
+    "productId": 123,
+    "merchantId": "a13bsd62s"
+  }
+}

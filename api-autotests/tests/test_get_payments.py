@@ -10,7 +10,7 @@ import json
 @allure.story("Get payments mock")
 @allure.title("Get all Failed and Canceled orders with valid customer id")
 def test_failed_and_canceled_orders():
-    exp_resp = import_json_from_file('../jsons/valid_response_all_john_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_all_john_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'FAILED,CANCELLED', 'customer_id': 'john-123'}
@@ -32,7 +32,7 @@ def test_failed_and_canceled_orders():
 @allure.story("Get payments mock")
 @allure.title("Get only Failed orders with valid customer id")
 def test_failed_orders():
-    exp_resp = import_json_from_file('../jsons/valid_response_2_failed_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_2_failed_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'FAILED', 'customer_id': 'john-123'}
@@ -54,7 +54,7 @@ def test_failed_orders():
 @allure.story("Get payments mock")
 @allure.title("Get only Canceled orders with valid customer id")
 def test_canceled_orders():
-    exp_resp = import_json_from_file('../jsons/valid_response_3_canceled_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_3_canceled_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'CANCELLED', 'customer_id': 'john-123'}
@@ -76,7 +76,7 @@ def test_canceled_orders():
 @allure.story("Get payments mock")
 @allure.title("Get orders with Failed status and without customer id")
 def test_failed_no_cust_id():
-    exp_resp = import_json_from_file('../jsons/valid_response_all_john_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_all_john_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'FAILED'}
@@ -98,7 +98,7 @@ def test_failed_no_cust_id():
 @allure.story("Get payments mock")
 @allure.title("Get orders with Cancelled status and without customer id")
 def test_cancelled_no_cust_id():
-    exp_resp = import_json_from_file('../jsons/valid_response_all_john_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_all_john_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'CANCELLED'}
@@ -120,7 +120,7 @@ def test_cancelled_no_cust_id():
 @allure.story("Get payments mock")
 @allure.title("Get orders with Failed and Cancelled status and without customer id")
 def test_cancelled_no_cust_id():
-    exp_resp = import_json_from_file('../jsons/valid_response_all_john_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_all_john_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'FAILED,CANCELLED'}
@@ -142,7 +142,7 @@ def test_cancelled_no_cust_id():
 @allure.story("Get payments mock")
 @allure.title("Get orders without query params")
 def test_orders_without_query_param():
-    exp_resp = import_json_from_file('../jsons/valid_response_all_john_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_all_john_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
 
@@ -164,7 +164,7 @@ def test_orders_without_query_param():
 @allure.story("Get payments mock")
 @allure.title("Get orders with other customer id and without status")
 def test_other_customer_no_status():
-    exp_resp = import_json_from_file('../jsons/valid_response_another_customer.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_another_customer.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'customer_id': 'igor-999'}
@@ -186,7 +186,7 @@ def test_other_customer_no_status():
 @allure.story("Get payments mock")
 @allure.title("Get orders with other customer id and some status")
 def test_other_customer_some_status():
-    exp_resp = import_json_from_file('../jsons/valid_response_another_customer_failed_status.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_another_customer_failed_status.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'FAILED,CANCELLED', 'customer_id': 'igor-999'}
@@ -385,7 +385,7 @@ def test_not_valid_token_header():
 @allure.story("Get payments mock")
 @allure.title("Unknown additional header")
 def test_unknown_additional_header():
-    exp_resp = import_json_from_file('../jsons/valid_response_2_failed_orders.json')
+    exp_resp = import_json_from_file('../jsons/payments/get/valid_response_2_failed_orders.json')
 
     url = 'http://127.0.0.1:5000/payments'
     params = {'status': 'FAILED', 'customer_id': 'john-123'}
@@ -415,7 +415,7 @@ def test_not_valid_method():
         'Content-Type': 'application/json',
         'Not-Api-Key': 'valid_token'
     }
-    resp = requests.post(url, params=params, headers=headers)
+    resp = requests.delete(url, params=params, headers=headers)
     act_resp = resp.json()
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)

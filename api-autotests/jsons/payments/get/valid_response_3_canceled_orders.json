@@ -1,0 +1,54 @@
+{
+        "data": [
+            {
+                "id": "edQlak12",
+                "date": "2021-03-24T14:56:56.869248",
+                "status": "CANCELED",
+                "orderId": "my-order-33",
+                "currencyCode": "EUR",
+                "amount": 800,
+                "processor": {
+                    "name": "STRIPE",
+                    "processorMerchantId": "acct_stripe_1234"
+                },
+                "metadata": {
+                    "productId": 123,
+                    "merchantId": "a13bsd62s"
+                }
+            },
+            {
+                "id": "IHQlakKC",
+                "date": "2021-03-24T14:56:56.869248",
+                "status": "CANCELED",
+                "orderId": "my-order-32",
+                "currencyCode": "EUR",
+                "amount": 700,
+                "processor": {
+                    "name": "STRIPE",
+                    "processorMerchantId": "acct_stripe_1234"
+                },
+                "metadata": {
+                    "productId": 123,
+                    "merchantId": "a13bsd62s"
+                }
+            },
+            {
+                "id": "ASDElakKC",
+                "date": "2021-03-24T14:56:56.869248",
+                "status": "CANCELED",
+                "orderId": "my-order-31",
+                "currencyCode": "EUR",
+                "amount": 600,
+                "processor": {
+                    "name": "STRIPE",
+                    "processorMerchantId": "acct_stripe_1234"
+                },
+                "metadata": {
+                    "productId": 123,
+                    "merchantId": "a13bsd62s"
+                }
+            }
+        ],
+        "nextCursor": "string",
+        "prevCursor": "string"
+    }

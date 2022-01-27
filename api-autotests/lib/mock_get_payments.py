@@ -51,14 +51,93 @@ def get_payments():
         return jsonify({"message": "400 Bad Request"}), 400
 
 
-@app.route('/payments', methods=['POST'])
-def post_payments():
+@app.route('/payments', methods=['DELETE'])
+def delete_payments():
     return jsonify({"message": "405 Method Not Allowed"}), 405
 
 
 @app.route('/payments1', methods=['GET'])
-def init_payments1():
+def get_payments1():
     return jsonify({"message": "400 Bad Request"}), 400
+
+
+@app.route('/payments', methods=['POST'])
+def post_payments():
+    # Predefined responses
+    resp_valid_full = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
+    resp_400 = import_json_from_file('../jsons/400_response.json')
+    resp_404 = import_json_from_file('../jsons/404_response.json')
+    # Headers
+    headers = request.headers
+    idempotency_header = headers.get("X-Idempotency-Key")
+    # Body
+    request_data = request.get_json()
+    payment_method_token = request_data.get('paymentMethodToken')
+    customer_id = request_data.get('customerId')
+    order_id = request_data.get('orderId')
+    currency_code = request_data.get('currencyCode')
+    amount = request_data.get('amount')
+    paymentMethod = request_data.get('paymentMethod')
+    paymentMethod_vaultOnSuccess = paymentMethod.get('vaultOnSuccess')
+    customer = request_data.get('customer')
+    customer_emailAddress = customer.get('emailAddress')
+    metadata = request_data.get('metadata')
+    metadata_productId = metadata.get('productId')
+    metadata_merchantId = metadata.get('merchantId')
+
+    if customer_emailAddress == 'valid123@gmail.com' \
+            or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and amount is None) \
+            or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and currency_code is None) \
+            or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and order_id is None):
+        return jsonify(resp_valid_full), 201
+    elif paymentMethod_vaultOnSuccess is True and customer_id is None:
+        return jsonify(resp_400), 400
+    elif type(customer_id) == int:
+        return jsonify(resp_400), 400
+    elif customer_id == '' or customer_id == 'customer-234' or (customer_id is None and paymentMethod_vaultOnSuccess is False) :
+        return jsonify(resp_valid_full), 201
+    elif currency_code == 'XYZ' or currency_code == '':
+        return jsonify(resp_400), 400
+    elif amount == '$100' or amount == 0.1 or amount == -1:
+        return jsonify(resp_400), 400
+    elif amount == 0:
+        return jsonify(resp_valid_full), 201
+    elif metadata is not None or metadata_productId is None or metadata_merchantId is None:
+        return jsonify(resp_400), 400
+    elif idempotency_header == 'valid_Idempotency-Key':
+        if payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4':
+            return jsonify(resp_valid_full), 201
+        elif payment_method_token is None:
+            return jsonify(resp_400), 400
+        elif payment_method_token != 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4':
+            return jsonify(resp_404), 404
+    elif idempotency_header != 'valid_Idempotency-Key':
+        return jsonify(resp_404), 404
+    else:
+        return jsonify({"message": "400 Bad Request"}), 400
+
+
+@app.route('/json-example', methods=['POST'])
+def json_example():
+    request_data = request.get_json()
+
+    language = request_data['language']
+    framework = request_data['framework']
+
+    # two keys are needed because of the nested object
+    python_version = request_data['version_info']['python']
+
+    # an index is needed because of the array
+    example = request_data['examples'][0]
+
+    boolean_test = request_data['boolean_test']
+
+    return '''
+           The language value is: {}
+           The framework value is: {}
+           The Python version is: {}
+           The item at index 0 in the example list is: {}
+           The boolean value is: {}'''.format(language, framework, python_version, example, boolean_test)
 
 
 def import_json_from_file(file: str):
