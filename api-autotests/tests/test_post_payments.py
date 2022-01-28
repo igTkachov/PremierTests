@@ -638,15 +638,43 @@ def test_with_customer():
 @allure.story("Post payments mock")
 @allure.title("Empty Idempotency-Key")
 def test_empty_idempotency_key():
-   ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': ''
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
 @allure.story("Post payments mock")
-@allure.title("Repeated Idempotency-Key")
+@allure.title("Repeated Idempotency-Key. It should be Unique")
 def test_repeated_idempotency_key():
-    ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': 'repeated_Idempotency-Key'
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
@@ -654,7 +682,21 @@ def test_repeated_idempotency_key():
 @allure.story("Post payments mock")
 @allure.title("Wrong format Idempotency-Key")
 def test_wrong_format_idempotency_key():
-    ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': '**************'
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
@@ -662,7 +704,20 @@ def test_wrong_format_idempotency_key():
 @allure.story("Post payments mock")
 @allure.title("Without Idempotency-Key")
 def test_without_idempotency_key():
-    ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
@@ -670,7 +725,21 @@ def test_without_idempotency_key():
 @allure.story("Post payments mock")
 @allure.title("Wrong Idempotency-Key header name")
 def test_wrong_idempotency_key_header_name():
-    ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json',
+        'wrong-X-Idempotency-Key': 'valid_Idempotency-Key'
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
@@ -678,7 +747,22 @@ def test_wrong_idempotency_key_header_name():
 @allure.story("Post payments mock")
 @allure.title("Two different Idempotency-Key headers")
 def test_two_different_idempotency_key_headers():
-    ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': 'repeated_Idempotency-Key',
+        'X-Idempotency-Key': 'repeated2_Idempotency-Key'
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
@@ -686,7 +770,22 @@ def test_two_different_idempotency_key_headers():
 @allure.story("Post payments mock :: Idempotency-Key header")
 @allure.title("Two same Idempotency-Key headers")
 def test_two_same_idempotency_key_headers():
-    ''''''
+    exp_resp = import_json_from_file('../jsons/401_response.json')
+    payload = import_json_from_file('../jsons/payments/post/requests/valid_full_payload.json')
+
+    url = 'http://127.0.0.1:5000/payments'
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': 'repeated_Idempotency-Key',
+        'X-Idempotency-Key': 'repeated_Idempotency-Key'
+    }
+    resp = requests.post(url, json=payload, headers=headers)
+    act_resp = resp.json()
+    pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
+    pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
+
+    assert resp.status_code == 401
+    assert exp_resp == act_resp
 
 
 # Tests for Content Type
@@ -703,7 +802,7 @@ def test_without_application_json_header():
 @allure.story("Post payments mock :: application/json header")
 @allure.title("With empty application/json header")
 def test_with_empty_application_json_header():
-    ''''''
+    ''' '''
 
 
 @allure.epic("Autotests-API")

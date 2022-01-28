@@ -14,6 +14,9 @@ def get_payments():
     resp_other_customer = import_json_from_file('../jsons/valid_response_another_customer.json')
     resp_other_customer_failed_orders = import_json_from_file('../jsons/valid_response_another_customer_failed_status.json')
     resp_empty = import_json_from_file('../jsons/empty_response.json')
+    resp_401 = import_json_from_file('../jsons/401_response.json')
+    resp_400 = import_json_from_file('../jsons/400_response.json')
+    resp_404 = import_json_from_file('../jsons/404_response.json')
     # headers
     headers = request.headers
     auth = headers.get("X-Api-Key")
@@ -25,9 +28,9 @@ def get_payments():
     customer = request.args.get("customer_id")
 
     if auth != 'valid_token' or not_auth != None:
-        return jsonify({"message": "ERROR: Unauthorized"}), 401
+        return jsonify(resp_401), 401
     elif 'status1' in args:
-        return jsonify({"message": "404 Not Found"}), 404
+        return jsonify(resp_404), 404
     elif 'status' in args and customer == None:
         return jsonify(resp_all_john_orders), 200
     elif status == None and customer == None:
@@ -46,9 +49,9 @@ def get_payments():
     elif customer != 'john-123':
         return jsonify(resp_other_customer), 200
     elif auth != 'valid_token':
-        return jsonify({"message": "ERROR: Unauthorized"}), 401
+        return jsonify(resp_401), 401
     else:
-        return jsonify({"message": "400 Bad Request"}), 400
+        return jsonify(resp_400), 400
 
 
 @app.route('/payments', methods=['DELETE'])
@@ -67,9 +70,11 @@ def post_payments():
     resp_valid_full = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
     resp_400 = import_json_from_file('../jsons/400_response.json')
     resp_404 = import_json_from_file('../jsons/404_response.json')
+    resp_401 = import_json_from_file('../jsons/401_response.json')
     # Headers
     headers = request.headers
     idempotency_header = headers.get("X-Idempotency-Key")
+    content_type = headers.get("Content-Type")
     # Body
     request_data = request.get_json()
     payment_method_token = request_data.get('paymentMethodToken')
@@ -85,7 +90,9 @@ def post_payments():
     metadata_productId = metadata.get('productId')
     metadata_merchantId = metadata.get('merchantId')
 
-    if customer_emailAddress == 'valid123@gmail.com' \
+    if idempotency_header != 'valid_Idempotency-Key' or idempotency_header == 'repeated_Idempotency-Key':
+        return jsonify(resp_401), 401
+    elif customer_emailAddress == 'valid123@gmail.com' \
             or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and amount is None) \
             or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and currency_code is None) \
             or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and order_id is None):
