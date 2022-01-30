@@ -8,15 +8,16 @@ app = Flask(__name__)
 @app.route('/payments', methods=['GET'])
 def get_payments():
     # get response from file
-    resp_all_john_orders = import_json_from_file('../jsons/valid_response_all_john_orders.json')
-    resp_failed_orders = import_json_from_file('../jsons/valid_response_2_failed_orders.json')
-    resp_canceled_orders = import_json_from_file('../jsons/valid_response_3_canceled_orders.json')
-    resp_other_customer = import_json_from_file('../jsons/valid_response_another_customer.json')
-    resp_other_customer_failed_orders = import_json_from_file('../jsons/valid_response_another_customer_failed_status.json')
-    resp_empty = import_json_from_file('../jsons/empty_response.json')
-    resp_401 = import_json_from_file('../jsons/401_response.json')
-    resp_400 = import_json_from_file('../jsons/400_response.json')
-    resp_404 = import_json_from_file('../jsons/404_response.json')
+    resp_all_john_orders = import_json_from_file('../../jsons/valid_response_all_john_orders.json')
+    resp_failed_orders = import_json_from_file('../../jsons/valid_response_2_failed_orders.json')
+    resp_canceled_orders = import_json_from_file('../../jsons/valid_response_3_canceled_orders.json')
+    resp_other_customer = import_json_from_file('../../jsons/valid_response_another_customer.json')
+    resp_other_customer_failed_orders = import_json_from_file(
+        '../../jsons/valid_response_another_customer_failed_status.json')
+    resp_empty = import_json_from_file('../../jsons/empty_response.json')
+    resp_401 = import_json_from_file('../../jsons/401_response.json')
+    resp_400 = import_json_from_file('../../jsons/400_response.json')
+    resp_404 = import_json_from_file('../../jsons/404_response.json')
     # headers
     headers = request.headers
     auth = headers.get("X-Api-Key")
@@ -67,10 +68,10 @@ def get_payments1():
 @app.route('/payments', methods=['POST'])
 def post_payments():
     # Predefined responses
-    resp_valid_full = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
-    resp_400 = import_json_from_file('../jsons/400_response.json')
-    resp_404 = import_json_from_file('../jsons/404_response.json')
-    resp_401 = import_json_from_file('../jsons/401_response.json')
+    resp_valid_full = import_json_from_file('../../jsons/payments/post/responses/valid_full_response.json')
+    resp_400 = import_json_from_file('../../jsons/400_response.json')
+    resp_404 = import_json_from_file('../../jsons/404_response.json')
+    resp_401 = import_json_from_file('../../jsons/401_response.json')
     # Headers
     headers = request.headers
     idempotency_header = headers.get("X-Idempotency-Key")
@@ -126,14 +127,16 @@ def post_payments():
 
 @app.route('/payments/<string:id>/cancel', methods=['POST'])
 def json_example_str(id):
-    resp_valid_full = import_json_from_file('../jsons/payments/post/responses/create_payload_response.json')
-    resp_req = import_json_from_file('../jsons/payments/post/responses/create_payload_response_only_req_fields.json')
-    resp_req_plus_id = import_json_from_file('../jsons/payments/post/responses/create_payload_response_plus_id.json')
-    resp_amount_zero = import_json_from_file('../jsons/payments/post/responses/create_payload_response_amount_zero.json')
-    resp_amount_pos = import_json_from_file('../jsons/payments/post/responses/create_payload_response_amount_positive.json')
-    resp_400 = import_json_from_file('../jsons/400_response.json')
-    resp_404 = import_json_from_file('../jsons/404_response.json')
-    resp_401 = import_json_from_file('../jsons/401_response.json')
+    resp_valid_full = import_json_from_file('../../jsons/payments/post/responses/create_payload_response.json')
+    resp_req = import_json_from_file('../../jsons/payments/post/responses/create_payload_response_only_req_fields.json')
+    resp_req_plus_id = import_json_from_file('../../jsons/payments/post/responses/create_payload_response_plus_id.json')
+    resp_amount_zero = import_json_from_file(
+        '../../jsons/payments/post/responses/create_payload_response_amount_zero.json')
+    resp_amount_pos = import_json_from_file(
+        '../../jsons/payments/post/responses/create_payload_response_amount_positive.json')
+    resp_400 = import_json_from_file('../../jsons/400_response.json')
+    resp_404 = import_json_from_file('../../jsons/404_response.json')
+    resp_401 = import_json_from_file('../../jsons/401_response.json')
     # Headers
     headers = request.headers
     idempotency_header = headers.get("X-Idempotency-Key")
@@ -154,7 +157,7 @@ def json_example_str(id):
 
 @app.route('/payments/<int:id>/cancel', methods=['POST'])
 def json_example_int(id):
-    resp_400 = import_json_from_file('../jsons/400_response.json')
+    resp_400 = import_json_from_file('../../jsons/400_response.json')
     return jsonify(resp_400), 400
 
 

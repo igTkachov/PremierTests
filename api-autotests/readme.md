@@ -9,7 +9,7 @@ Require python 3.
 
 cd PremierTests/api-autotests/tests
 
-###Run mock server
+###Run api server for responses
 `python ../lib/mock_get_payments.py` 
 
 ###Run tests with reporting listener to collect reports
