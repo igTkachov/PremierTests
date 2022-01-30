@@ -7,7 +7,7 @@ import json
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Create payment with full valid payload")
 def test_full_valid_payload():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -23,13 +23,14 @@ def test_full_valid_payload():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
+
 
 # Tests for Required field in request
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body without paymentMethodToken")
 def test_request_without_paymentMethodToken():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -48,9 +49,10 @@ def test_request_without_paymentMethodToken():
     assert resp.status_code == 400
     assert exp_resp == act_resp
 
+
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty paymentMethodToken")
 def test_request_with_empty_paymentMethodToken():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -72,7 +74,7 @@ def test_request_with_empty_paymentMethodToken():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with wrong format of paymentMethodToken")
 def test_request_with_wrong_format_of_paymentMethodToken():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -94,7 +96,7 @@ def test_request_with_wrong_format_of_paymentMethodToken():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body paymentMethodToken and without amount")
 def test_paymentMethodToken_without_amount():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -110,13 +112,13 @@ def test_paymentMethodToken_without_amount():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body paymentMethodToken and without currencyCode")
 def test_paymentMethodToken_without_currencyCode():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -132,13 +134,13 @@ def test_paymentMethodToken_without_currencyCode():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body paymentMethodToken and without orderId")
 def test_paymentMethodToken_without_orderId():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -154,13 +156,13 @@ def test_paymentMethodToken_without_orderId():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body paymentMethodToken and without amount, currencyCode, orderId")
 def test_paymentMethodToken_without_amount_currencyCode_orderId():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -176,14 +178,14 @@ def test_paymentMethodToken_without_amount_currencyCode_orderId():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 # Tests for CustomerId
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with customerId and paymentMethod.vaultOnSuccess as true")
 def test_customerId_vaultOnSuccess_is_true():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -199,13 +201,13 @@ def test_customerId_vaultOnSuccess_is_true():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body without customerId and paymentMethod.vaultOnSuccess as false")
 def test_without_customerId_vaultOnSuccess_is_false():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -221,13 +223,13 @@ def test_without_customerId_vaultOnSuccess_is_false():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty customerId and paymentMethod.vaultOnSuccess as true")
 def test_empty_customerId_vaultOnSuccess_is_true():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -243,14 +245,13 @@ def test_empty_customerId_vaultOnSuccess_is_true():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
-
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body without customerId and paymentMethod.vaultOnSuccess as true")
 def test_without_customerId_vaultOnSuccess_is_true():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -272,7 +273,7 @@ def test_without_customerId_vaultOnSuccess_is_true():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request customerId as number")
 def test_customerId_as_number():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -295,7 +296,7 @@ def test_customerId_as_number():
 # Tests for OrderId
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty orderId")
 def test_empty_orderId():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -318,7 +319,7 @@ def test_empty_orderId():
 # Tests for CurrencyCode
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty CurrencyCode")
 def test_empty_currencyCode():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -340,7 +341,7 @@ def test_empty_currencyCode():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with wrong ISO format of currencyCode")
 def test_wrong_currencyCode():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -363,7 +364,7 @@ def test_wrong_currencyCode():
 # Tests for amount
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty amount")
 def test_empty_amount():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -385,7 +386,7 @@ def test_empty_amount():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with amount as string")
 def test_amount_as_string():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -407,7 +408,7 @@ def test_amount_as_string():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with amount as 0")
 def test_amount_as_zero():
     exp_resp = import_json_from_file('../jsons/payments/post/responses/valid_full_response.json')
@@ -423,13 +424,13 @@ def test_amount_as_zero():
     pretty_print_request(resp.request.method, resp.request.url, resp.request.headers.items(), resp.request.body)
     pretty_print_response(resp.status_code, resp.headers.items(), resp.text)
 
-    assert resp.status_code == 201
+    assert resp.status_code == requests.codes.ok
     assert exp_resp == act_resp
 
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with amount as decimal")
 def test_amount_as_decimal():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -451,7 +452,7 @@ def test_amount_as_decimal():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with amount as minus number")
 def test_amount_as_minus_number():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -474,7 +475,7 @@ def test_amount_as_minus_number():
 # Tests for metadata
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty metadata")
 def test_empty_metadata():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -496,7 +497,7 @@ def test_empty_metadata():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with empty metadata")
 def test_empty_metadata():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -518,7 +519,7 @@ def test_empty_metadata():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body without merchantId")
 def test_without_merchantId():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -538,10 +539,9 @@ def test_without_merchantId():
     assert exp_resp == act_resp
 
 
-
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body without productId")
 def test_without_productId():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -563,7 +563,7 @@ def test_without_productId():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body productId isn't a number value")
 def test_productId_is_not_number():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -585,7 +585,7 @@ def test_productId_is_not_number():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body merchantId isn't a string value")
 def test_merchantId_is_not_str():
     exp_resp = import_json_from_file('../jsons/400_response.json')
@@ -608,7 +608,7 @@ def test_merchantId_is_not_str():
 # Tests for customer
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with customer")
 def test_with_customer():
     '''TODO Should be added a huge amount of tests for 8 inner fields'''
@@ -617,7 +617,7 @@ def test_with_customer():
 # Tests for order
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with order")
 def test_with_customer():
     '''TODO Should be added a huge amount of tests for 4 inner fields'''
@@ -626,7 +626,7 @@ def test_with_customer():
 # Tests for paymentMethod
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Request body with order")
 def test_with_customer():
     '''TODO Should be added a huge amount of tests for 3 inner fields'''
@@ -635,7 +635,7 @@ def test_with_customer():
 # Tests for idempotency key
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Empty Idempotency-Key")
 def test_empty_idempotency_key():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -657,7 +657,7 @@ def test_empty_idempotency_key():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Repeated Idempotency-Key. It should be Unique")
 def test_repeated_idempotency_key():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -679,7 +679,7 @@ def test_repeated_idempotency_key():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Wrong format Idempotency-Key")
 def test_wrong_format_idempotency_key():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -701,7 +701,7 @@ def test_wrong_format_idempotency_key():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Without Idempotency-Key")
 def test_without_idempotency_key():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -722,7 +722,7 @@ def test_without_idempotency_key():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Wrong Idempotency-Key header name")
 def test_wrong_idempotency_key_header_name():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -744,7 +744,7 @@ def test_wrong_idempotency_key_header_name():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock")
+@allure.story("Create payments mock")
 @allure.title("Two different Idempotency-Key headers")
 def test_two_different_idempotency_key_headers():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -767,7 +767,7 @@ def test_two_different_idempotency_key_headers():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock :: Idempotency-Key header")
+@allure.story("Create payments mock :: Idempotency-Key header")
 @allure.title("Two same Idempotency-Key headers")
 def test_two_same_idempotency_key_headers():
     exp_resp = import_json_from_file('../jsons/401_response.json')
@@ -791,7 +791,7 @@ def test_two_same_idempotency_key_headers():
 # Tests for Content Type
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock :: application/json header")
+@allure.story("Create payments mock :: application/json header")
 @allure.title("Without application/json header")
 def test_without_application_json_header():
     ''''''
@@ -799,7 +799,7 @@ def test_without_application_json_header():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock :: application/json header")
+@allure.story("Create payments mock :: application/json header")
 @allure.title("With empty application/json header")
 def test_with_empty_application_json_header():
     ''' '''
@@ -807,22 +807,10 @@ def test_with_empty_application_json_header():
 
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
-@allure.story("Post payments mock :: application/json header")
+@allure.story("Create payments mock :: application/json header")
 @allure.title("With not supported application/xml header")
 def test_with_empty_application_xml_header():
     ''''''
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 @allure.step("Request")

@@ -1,0 +1,5 @@
+{
+  "orderId": "order-abc",
+  "currencyCode": "EUR",
+  "amount": 42
+}

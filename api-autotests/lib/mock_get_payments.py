@@ -96,24 +96,24 @@ def post_payments():
             or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and amount is None) \
             or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and currency_code is None) \
             or (payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4' and order_id is None):
-        return jsonify(resp_valid_full), 201
+        return jsonify(resp_valid_full), 200
     elif paymentMethod_vaultOnSuccess is True and customer_id is None:
         return jsonify(resp_400), 400
     elif type(customer_id) == int:
         return jsonify(resp_400), 400
     elif customer_id == '' or customer_id == 'customer-234' or (customer_id is None and paymentMethod_vaultOnSuccess is False) :
-        return jsonify(resp_valid_full), 201
+        return jsonify(resp_valid_full), 200
     elif currency_code == 'XYZ' or currency_code == '':
         return jsonify(resp_400), 400
     elif amount == '$100' or amount == 0.1 or amount == -1:
         return jsonify(resp_400), 400
     elif amount == 0:
-        return jsonify(resp_valid_full), 201
+        return jsonify(resp_valid_full), 200
     elif metadata is not None or metadata_productId is None or metadata_merchantId is None:
         return jsonify(resp_400), 400
     elif idempotency_header == 'valid_Idempotency-Key':
         if payment_method_token == 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4':
-            return jsonify(resp_valid_full), 201
+            return jsonify(resp_valid_full), 200
         elif payment_method_token is None:
             return jsonify(resp_400), 400
         elif payment_method_token != 'heNwnqaeRiqvY1UcslfQc3wxNjEzOTIxNjc4':
@@ -124,27 +124,38 @@ def post_payments():
         return jsonify({"message": "400 Bad Request"}), 400
 
 
-@app.route('/json-example', methods=['POST'])
-def json_example():
-    request_data = request.get_json()
+@app.route('/payments/<string:id>/cancel', methods=['POST'])
+def json_example_str(id):
+    resp_valid_full = import_json_from_file('../jsons/payments/post/responses/create_payload_response.json')
+    resp_req = import_json_from_file('../jsons/payments/post/responses/create_payload_response_only_req_fields.json')
+    resp_req_plus_id = import_json_from_file('../jsons/payments/post/responses/create_payload_response_plus_id.json')
+    resp_amount_zero = import_json_from_file('../jsons/payments/post/responses/create_payload_response_amount_zero.json')
+    resp_amount_pos = import_json_from_file('../jsons/payments/post/responses/create_payload_response_amount_positive.json')
+    resp_400 = import_json_from_file('../jsons/400_response.json')
+    resp_404 = import_json_from_file('../jsons/404_response.json')
+    resp_401 = import_json_from_file('../jsons/401_response.json')
+    # Headers
+    headers = request.headers
+    idempotency_header = headers.get("X-Idempotency-Key")
 
-    language = request_data['language']
-    framework = request_data['framework']
+    if id == 'ord-req':
+        return jsonify(resp_req), 200
+    elif id == 'ord-req-id':
+        return jsonify(resp_req_plus_id), 200
+    elif id == 'amount-zero':
+        return jsonify(resp_amount_zero), 200
+    elif id == 'amount-pos':
+        return jsonify(resp_amount_pos), 200
+    elif idempotency_header != 'valid_Idempotency-Key':
+        return jsonify(resp_401), 401
+    else:
+        return jsonify(resp_valid_full), 200
 
-    # two keys are needed because of the nested object
-    python_version = request_data['version_info']['python']
 
-    # an index is needed because of the array
-    example = request_data['examples'][0]
-
-    boolean_test = request_data['boolean_test']
-
-    return '''
-           The language value is: {}
-           The framework value is: {}
-           The Python version is: {}
-           The item at index 0 in the example list is: {}
-           The boolean value is: {}'''.format(language, framework, python_version, example, boolean_test)
+@app.route('/payments/<int:id>/cancel', methods=['POST'])
+def json_example_int(id):
+    resp_400 = import_json_from_file('../jsons/400_response.json')
+    return jsonify(resp_400), 400
 
 
 def import_json_from_file(file: str):
