@@ -2,7 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class LoginPageElements(object):
+
+class LoginPageElements:
 
     BODY = '#yDmH0d'
     USER = 'identifierId'
@@ -12,7 +13,7 @@ class LoginPageElements(object):
     LOGIN_ERROR = '#password > div.LXRPh > div.dEOOab.RxsGPe'
 
 
-class LoginPage():
+class LoginPage:
     # login page actions
 
     def navigate_to_gmail(self):

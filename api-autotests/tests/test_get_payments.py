@@ -2,6 +2,7 @@ import allure
 import requests
 from lib.util import ApiUtil as util
 
+
 @allure.epic("Autotests-API")
 @allure.feature("Payments")
 @allure.story("Get payments mock")

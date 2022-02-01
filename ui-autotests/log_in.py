@@ -1,70 +1,108 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+import pytest
+
+from lib.steps import *
 
 
-# @pytest.fixture
-# def test_valid_username_incorrect_password():
-#     open_log_in_page()
-#     provide_email('itkachov@test.com')
-#     provide_password('xxxxxxx')
-#     login_click()
-#     check_login_error_message()
+@pytest.fixture(scope='session', autouse=True)
+def st():
+    # dr = DriverConfig(webdriver.Chrome(ChromeDriverManager().install()), 5, 10)
+    # yield _driver
+    # _driver.quit()
+    return Steps()
 
 
-def init_driver():
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.maximize_window()
-    driver.wait = WebDriverWait(driver, 5)
-    driver.implicitly_wait(10)
-    return driver
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should be able to log in with valid email and password")
+def test_log_in_with_valid_email_and_password():
+    '''Can't be done due to lack of permissions'''
 
 
-def open_log_in_page():
-    driver.get('https://sandbox-dashboard.primer.io/login')
-    # wait till page loaded and log in button will be displayed
-    driver.wait.until(EC.presence_of_element_located(
-        (By.CSS_SELECTOR, 'button[data-test=\'button-submit\']')))
-    driver.get_screenshot_as_file('screenshots/test_valid_username_incorrect_password/open_log_in_page_step.png')
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with valid username and incorrect password")
+def test_not_log_in_with_valid_username_and_incorrect_password(st):
+    st.open_log_in_page()
+    st.provide_email('itkachov@test.com')
+    st.provide_password('not_valid_pass')
+    st.login_click()
+    st.check_login_error_message()
 
 
-def provide_email(email):
-    email_field = driver.wait.until(EC.presence_of_element_located(
-        (By.ID, 'username')))
-    email_field.send_keys(email)
-    driver.get_screenshot_as_file('screenshots/test_valid_username_incorrect_password/provide_email_step.png')
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with unregistered username and valid password")
+def test_not_log_in_with_unregistered_username_and_valid_password(st):
+    st.open_log_in_page()
+    st.provide_email('valid_email@test.com')
+    st.provide_password('test12345')
+    st.login_click()
+    st.check_login_error_message()
 
 
-def provide_password(password):
-    pass_field = driver.wait.until(EC.presence_of_element_located(
-        (By.ID, 'password')))
-    pass_field.send_keys(password)
-    driver.get_screenshot_as_file('screenshots/test_valid_username_incorrect_password/provide_password_step.png')
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with password of another registrated users")
+def test_not_log_in_with_password_of_another_registrated_users(st):
+    st.open_log_in_page()
+    st.provide_email('itkachov@test.com')
+    st.provide_password('other_password')
+    st.login_click()
+    st.check_login_error_message()
 
 
-def login_click():
-    login_button = driver.find_element_by_css_selector('button[data-test=\'button-submit\']')
-    login_button.click()
-    driver.get_screenshot_as_file('screenshots/test_valid_username_incorrect_password/login_click_step.png')
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with empty email and empty password")
+def test_not_log_in_with_empty_email_and_empty_password(st):
+    st.open_log_in_page()
+    st.login_click()
+    st.check_email_error_message()
+    st.check_password_error_message()
 
 
-def check_login_error_message():
-    exp_err_message = 'Incorrect username or password'
-    act_err_message = driver.wait.until(EC.visibility_of_element_located(
-        (By.CSS_SELECTOR, 'div[data-test=\'component-Errors\']'))).text
-    print('Expected error message: %s', exp_err_message)
-    print('Actual error message: %s', act_err_message)
-    driver.get_screenshot_as_file('screenshots/test_valid_username_incorrect_password/check_login_error_message_step.png')
-    assert exp_err_message == act_err_message, 'Log in error message is not equal'
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with empty email and valid password")
+def test_not_log_in_with_empty_email_and_valid_password(st):
+    st.open_log_in_page()
+    st.provide_password('test12345')
+    st.login_click()
+    st.check_email_error_message()
 
 
-if __name__ == "__main__":
-    driver = init_driver()
-    open_log_in_page()
-    provide_email('itkachov@test.com')
-    provide_password('xxxxxxx')
-    login_click()
-    check_login_error_message()
-    driver.quit()
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with valid email and empty password")
+def test_not_log_in_with_valid_email_and_empty_password(st):
+    st.open_log_in_page()
+    st.provide_email('itkachov@test.com')
+    st.login_click()
+    st.check_password_error_message()
+
+
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should not be able to log in with type valid email as password and valid password as email")
+def test_not_log_in_with_revers_credentials(st):
+    st.open_log_in_page()
+    st.provide_email('valid_pass')
+    st.provide_password('itkachov@test.com')
+    st.login_click()
+    st.check_login_error_message()
+
+
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should be able to log in using type or enter buttons")
+def test_log_in_with_right_credentials_use_keyboard(st):
+    '''Can't be done due to lack of permissions'''
