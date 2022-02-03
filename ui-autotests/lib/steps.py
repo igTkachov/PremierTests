@@ -1,26 +1,24 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait
 from allure_commons.types import AttachmentType
 import allure
 
 
-class LoginPageElements():
+class LoginPageElements:
 
     LOGIN = 'button[data-test=\'button-submit\']'
     USER = 'username'
     PASS = 'password'
     INCORRECT_ERROR_MESSAGE = 'div[data-test=\'component-Errors\']'
     FILL_IN_ERROR_MESSAGE = '.List__Root-sc-icriza-0 div[class^=\'Text__Root\']'
+    EXP_ERROR_MESSAGE = 'Please fill in this field'
 
 
 class Steps:
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.maximize_window()
-    driver.wait = WebDriverWait(driver, 5)
-    driver.implicitly_wait(10)
+
+    def __init__(self, driver: webdriver):
+        self.driver = driver
 
     @allure.step('Open log in page')
     def open_log_in_page(self):
@@ -60,16 +58,15 @@ class Steps:
 
     @allure.step('Check email error message')
     def check_email_error_message(self):
-        exp_err_message = 'Please fill in this field'
+
         act_err_message = self.driver.wait.until(EC.visibility_of_all_elements_located(
             (By.CSS_SELECTOR, LoginPageElements.FILL_IN_ERROR_MESSAGE)))[0].text
         allure.attach(self.driver.get_screenshot_as_png(), name="check_email_error_message", attachment_type=AttachmentType.PNG)
-        assert exp_err_message == act_err_message, 'Fill in error message is not equal'
+        assert LoginPageElements.EXP_ERROR_MESSAGE == act_err_message, 'Fill in error message is not equal'
 
     @allure.step('Check password error message')
     def check_password_error_message(self):
-        exp_err_message = 'Please fill in this field'
-        act_err_message = self.driver.wait.until(EC.visibility_of_all_elements_located(
-            (By.CSS_SELECTOR, LoginPageElements.FILL_IN_ERROR_MESSAGE)))[1].text
+        act_err_message = self.driver.wait.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, LoginPageElements.FILL_IN_ERROR_MESSAGE))).text
         allure.attach(self.driver.get_screenshot_as_png(), name="check_password_error_message", attachment_type=AttachmentType.PNG)
-        assert exp_err_message == act_err_message, 'Fill in error message is not equal'
+        assert LoginPageElements.EXP_ERROR_MESSAGE == act_err_message, 'Fill in error message is not equal'

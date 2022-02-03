@@ -1,14 +1,24 @@
 import pytest
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
 
 from lib.steps import *
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope='function', autouse=True)
 def st():
-    # dr = DriverConfig(webdriver.Chrome(ChromeDriverManager().install()), 5, 10)
-    # yield _driver
-    # _driver.quit()
-    return Steps()
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.maximize_window()
+    driver.wait = WebDriverWait(driver, 5)
+    driver.implicitly_wait(10)
+    return Steps(driver)
+
+
+@pytest.mark.usefixtures("st")
+@pytest.fixture(scope='function', autouse=True)
+def driver(st):
+    yield
+    st.driver.close()
 
 
 @allure.epic("Autotests-UI")
