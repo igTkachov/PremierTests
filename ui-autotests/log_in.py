@@ -1,17 +1,30 @@
 import pytest
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 
 from lib.steps import *
 
 
+@pytest.mark.usefixtures("browser")
 @pytest.fixture(scope='function', autouse=True)
-def st():
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+def st(browser):
+    options = Options()
+    options.headless = True
+    if browser == 'firefox':
+        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+    else:
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     driver.maximize_window()
     driver.wait = WebDriverWait(driver, 5)
     driver.implicitly_wait(10)
     return Steps(driver)
+
+
+@pytest.fixture(scope='module', autouse=True)
+def browser(pytestconfig):
+    return pytestconfig.getoption('browser')
 
 
 @pytest.mark.usefixtures("st")
@@ -24,7 +37,7 @@ def driver(st):
 @allure.epic("Autotests-UI")
 @allure.feature("Log in")
 @allure.story("Validate Log in flow")
-@allure.title("User should be able to log in with valid email and password")
+@allure.title("User should be able to log in with valid email and password (no happy path data)")
 def test_log_in_with_valid_email_and_password():
     '''Can't be done due to lack of permissions'''
 
@@ -113,6 +126,6 @@ def test_not_log_in_with_revers_credentials(st):
 @allure.epic("Autotests-UI")
 @allure.feature("Log in")
 @allure.story("Validate Log in flow")
-@allure.title("User should be able to log in using type or enter buttons")
+@allure.title("User should be able to log in using type or enter buttons (no happy path data)")
 def test_log_in_with_right_credentials_use_keyboard(st):
     '''Can't be done due to lack of permissions'''
