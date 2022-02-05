@@ -1,3 +1,4 @@
 selenium
 webdriver-manager
-pytest-bdd
+pytest
+allure

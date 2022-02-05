@@ -1,4 +1,5 @@
 pytest
-allure-pytest
+allure
 requests
 flask
+json

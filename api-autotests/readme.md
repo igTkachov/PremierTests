@@ -2,9 +2,15 @@
 ## Setup
 
 Require python 3.
+### Install packages
+`pip3 install -r requirements.txt`
 
-`pip install allure`
-`pip install requests`
+or install packages separately
+
+`pip3 install allure`
+`pip3 install requests`
+`pip3 install flask`
+`pip3 install pytest`
 `pip install json`
 
 git clone https://github.com/igTkachov/PremierTests.git

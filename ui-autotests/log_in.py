@@ -2,29 +2,32 @@ import pytest
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from lib.steps import *
 
 
-@pytest.mark.usefixtures("browser")
 @pytest.fixture(scope='function', autouse=True)
-def st(browser):
-    options = Options()
-    options.headless = True
-    if browser == 'firefox':
-        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+def st(run_browser):
+    if run_browser == 'firefox':
+        f_options = FirefoxOptions()
+        f_options.add_argument("--headless")
+        driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=f_options)
     else:
-        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        ch_options = ChromeOptions()
+        ch_options.headless = True
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=ch_options)
     driver.maximize_window()
     driver.wait = WebDriverWait(driver, 5)
     driver.implicitly_wait(10)
     return Steps(driver)
 
 
-@pytest.fixture(scope='module', autouse=True)
-def browser(pytestconfig):
-    return pytestconfig.getoption('browser')
+def pytest_generate_tests(metafunc):
+    browsers = metafunc.config.getoption("browser")
+    if "run_browser" in metafunc.fixturenames:
+        metafunc.parametrize("run_browser", browsers)
 
 
 @pytest.mark.usefixtures("st")
@@ -32,14 +35,6 @@ def browser(pytestconfig):
 def driver(st):
     yield
     st.driver.close()
-
-
-@allure.epic("Autotests-UI")
-@allure.feature("Log in")
-@allure.story("Validate Log in flow")
-@allure.title("User should be able to log in with valid email and password (no happy path data)")
-def test_log_in_with_valid_email_and_password():
-    '''Can't be done due to lack of permissions'''
 
 
 @allure.epic("Autotests-UI")
@@ -121,6 +116,14 @@ def test_not_log_in_with_revers_credentials(st):
     st.provide_password('itkachov@test.com')
     st.login_click()
     st.check_login_error_message()
+
+
+@allure.epic("Autotests-UI")
+@allure.feature("Log in")
+@allure.story("Validate Log in flow")
+@allure.title("User should be able to log in with valid email and password (no happy path data)")
+def test_log_in_with_valid_email_and_password():
+    '''Can't be done due to lack of permissions'''
 
 
 @allure.epic("Autotests-UI")
